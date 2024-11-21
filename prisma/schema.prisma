@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  logo        String
+  image       String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  skills      Skill[]   @relation("ProjectSkills")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Skill {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  projects  Project[] @relation("ProjectSkills")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  projects  Project[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Location {
+  id          Int      @id @default(autoincrement())
+  city        String
+  officeHours String
+  updatedAt   DateTime @updatedAt
+}
+
+model About {
+  id          Int      @id @default(autoincrement())
+  biography   String
+  resumeUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          Int      @id @default(autoincrement())
+  title       String
+  company     String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean  @default(false)
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  institution String
+  degree      String
+  field       String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean  @default(false)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TechStack {
+  id          Int      @id @default(autoincrement())
+  name        String
+  icon        String
+  category    String   // Frontend, Backend, Database, etc.
+  proficiency Int      // 1-100
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
