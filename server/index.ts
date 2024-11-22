@@ -61,3 +61,10 @@ app.use('/api/about', aboutRouter); // Add the about router
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.use(express.static(path.join(__dirname, 'frontend_build_folder')));
+
+// Catch-all route to serve the frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend_build_folder', 'index.html'));
+});
