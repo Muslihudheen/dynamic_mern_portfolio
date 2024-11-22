@@ -62,9 +62,10 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-app.use(express.static(path.join(__dirname, 'frontend_build_folder')));
+// Adjust the path to point to your actual build folder
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// Catch-all route to serve the frontend
+// Serve the frontend for all routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend_build_folder', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
