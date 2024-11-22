@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import toast from 'react-hot-toast';
 import { aboutAPI } from '../../services/api';
-import { API_BASE_URL } from '../../utils/constants';
 import { Upload } from 'lucide-react';
 
 const AboutPage = () => {
@@ -54,7 +53,7 @@ const AboutPage = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch(`${API_BASE_URL}/upload/resume`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/upload/resume`, {
         method: 'POST',
         body: formData,
         headers: {

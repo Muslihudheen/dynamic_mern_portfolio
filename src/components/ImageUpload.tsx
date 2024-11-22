@@ -1,7 +1,6 @@
 import React from 'react';
 import { Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from '../utils/constants';
 
 interface ImageUploadProps {
   onUploadSuccess: (url: string) => void;
@@ -27,7 +26,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadSuccess }) => {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch(`${API_BASE_URL}/upload`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
         method: 'POST',
         body: formData,
         headers: {
