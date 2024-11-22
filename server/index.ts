@@ -57,15 +57,15 @@ app.use('/api/location', locationRouter);
 app.use('/api/upload', authenticateToken, uploadRouter);
 app.use('/api/about', aboutRouter); // Add the about router
 
+// Serve static files from the `dist` directory outside of `server`
+app.use(express.static(path.join(__dirname, '..', 'dist')));
+
+// Catch-all route to serve the frontend's `index.html` for any unknown paths
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});
-
-// Adjust the path to point to your actual build folder
-app.use(express.static(path.join(__dirname, 'dist')));
-
-// Serve the frontend for all routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
