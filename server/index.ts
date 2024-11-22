@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs-extra';
+import helmet from 'helmet';
 import { fileURLToPath } from 'url';
 import { configureSecurityMiddleware } from './middleware/security';
 import { authRouter } from './routes/auth';
@@ -24,8 +25,24 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://dynamic-mern-portfolio.onrender.com', // Adjust to your frontend's origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true, // If you're using cookies or sessions
+}));
 app.use(express.json());
+
+// Use Helmet to set CSP headers
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", "https://dynamic-mern-portfolio.onrender.com"], // Allow API connections
+      scriptSrc: ["'self'", "'unsafe-inline'"], // Add any other sources if needed
+      styleSrc: ["'self'", "'unsafe-inline'"], // Add any other sources if needed
+    },
+  })
+);
 
 // Configure security middleware
 configureSecurityMiddleware(app);
